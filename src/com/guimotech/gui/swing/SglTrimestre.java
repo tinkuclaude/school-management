@@ -140,8 +140,18 @@ public class SglTrimestre extends JDialog {
     void validated(){
 
         TrimestreDTO dto = new TrimestreDTO();
-        String numeroStr = jTextFieldNumero.getText();
-        dto.setNumero(Integer.parseInt(numeroStr));
+        int numero;
+        try {
+            numero = Integer.parseInt(jTextFieldNumero.getText());
+            dto.setNumero(numero);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog (this,
+                    "Entrer un entier valide",
+                    "School Management", JOptionPane.INFORMATION_MESSAGE);
+            jTextFieldNumero.requestFocus();
+            jTextFieldNumero.selectAll();
+            return;
+        }
         dto.setIntitule(jTextFieldIntitule.getText());
 
         try {
@@ -192,7 +202,18 @@ public class SglTrimestre extends JDialog {
     private void supprimer() {
 
         String numeroStr = jTextFieldNumero.getText();
-        int key = Integer.parseInt(numeroStr);
+        int key;
+        try {
+            key = Integer.parseInt(numeroStr);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog (this,
+                    "Entrer un entier valide",
+                    "School Management", JOptionPane.INFORMATION_MESSAGE);
+            jTextFieldNumero.requestFocus();
+            jTextFieldNumero.selectAll();
+            return;
+        }
+
 
         try {
             trimService.delete(key);
