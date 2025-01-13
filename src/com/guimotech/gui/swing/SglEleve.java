@@ -275,7 +275,7 @@ public class SglEleve extends JDialog {
         try {
             eleveService.delete(key);
             JOptionPane.showMessageDialog (this,
-                    "Trimestre supprimé avec succèss.",
+                    "Eleve supprimé avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
             System.out.println();
         } catch (Exception e) {
