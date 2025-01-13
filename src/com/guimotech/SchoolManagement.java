@@ -1,6 +1,7 @@
 package com.guimotech;
 
 import com.guimotech.config.DBConfig;
+import com.guimotech.gui.swing.SglEleve;
 import com.guimotech.gui.swing.SglTrimestre;
 
 import java.sql.SQLException;
@@ -17,10 +18,15 @@ public class SchoolManagement {
             System.out.println("Verifier vos parametres de connexion.");
         }
 
-        boolean model = true;
-        SglTrimestre sglTerm = SglTrimestre.getInstance(null, model);
+        boolean modele = true;
+        SglTrimestre sglTerm = SglTrimestre.getInstance(null, modele);
 
         sglTerm.setVisible(true);
+
+        boolean model = true;
+         SglEleve sglEleve = SglEleve.getInstance(null, model);
+
+        sglEleve.setVisible(true);
 //        sglTerm.dispose();
 
 /*
