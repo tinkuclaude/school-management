@@ -1,6 +1,8 @@
 package com.guimotech.dao.dto;
 
 public class EleveDTO {
+
+        private Long id;
         private String matricule;
         private String nom;
         private String prenom;
@@ -8,6 +10,7 @@ public class EleveDTO {
         private  String datenaiss;
 
         public EleveDTO(String matricule, String nom, String prenom, String sexe, String datenaiss) {
+//            this.id = id;
             this.matricule = matricule;
             this.nom = nom;
             this.prenom = prenom;
@@ -16,6 +19,14 @@ public class EleveDTO {
         }
 
         public EleveDTO() {
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
         }
 
         public String getMatricule() {
@@ -63,7 +74,7 @@ public class EleveDTO {
 
     @Override
         public String toString() {
-            return "matricule: "+ matricule +" nom: "+ nom +" prenom: "+ prenom +" sexe: "+ sexe +" datenaiss: "+ datenaiss;
+            return " matricule: "+ matricule +" nom: "+ nom +" prenom: "+ prenom +" sexe: "+ sexe +" datenaiss: "+ datenaiss;
         }
 
 }

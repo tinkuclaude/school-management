@@ -42,7 +42,7 @@ public class EleveRepo extends RepoAbsEleve<Eleve, String> {
 
     @Override
     public boolean update(Eleve obj) throws SQLException {
-        String sql = "UPDATE eleve set nom = ? where matricule = ?;";
+        String sql = "UPDATE eleve set nom = ? prenom = ? sexe = ? datenaiss = ? where id = ?;";
 
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
         ps.setString(1, obj.getMatricule());
@@ -105,6 +105,7 @@ public class EleveRepo extends RepoAbsEleve<Eleve, String> {
         if(res != null) {
             while(res.next()) {
                 Eleve eleve = new Eleve();
+//                eleve.setId(res.getLong("id"));
                 eleve.setMatricule(res.getString("matricule"));
                 eleve.setNom(res.getString("nom"));
                 eleve.setPrenom(res.getString("prenom"));

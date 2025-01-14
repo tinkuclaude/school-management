@@ -52,7 +52,7 @@ public class SglEleve extends JDialog {
     }
 
     void initialize() {
-        this.setSize(300, 200);
+        this.setSize(300, 350);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un eleve");
         //this.setIconImage();
@@ -257,11 +257,11 @@ public class SglEleve extends JDialog {
 
     private void supprimer() {
 
-        String matriculeStr = jTextFieldMatricule.getText();
+        String idStr = jTextFieldMatricule.getText();
         String key;
         try {
 //            key = Integer.parseInt(matriculeStr);
-            key = (matriculeStr);
+            key = (idStr);
         } catch (Exception e) {
             JOptionPane.showMessageDialog (this,
                     "Entrer un entier valide",

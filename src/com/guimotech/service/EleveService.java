@@ -85,7 +85,7 @@ public class EleveService {
         return convert(eleve);
     }
 
-    public EleveDTO getTrimestre(String matricule) throws Exception {
+    public EleveDTO getEleve(String matricule) throws Exception {
         Eleve eleve = eleveRepo.findById(matricule);
         if (eleve.getMatricule() == null) {
             // l'eleve n'existe pas

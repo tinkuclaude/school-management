@@ -1,6 +1,7 @@
 package com.guimotech.dao.model;
 
 public class Eleve {
+//    private Long id;
     private String matricule;
     private String nom;
     private String prenom;
@@ -8,6 +9,7 @@ public class Eleve {
     private String datenaiss;
 
     public Eleve(String matricule, String nom, String prenom, String sexe, String datenaiss) {
+//        this.id = id;
         this.matricule = matricule;
         this.nom = nom;
         this.prenom = prenom;
@@ -17,6 +19,14 @@ public class Eleve {
 
     public Eleve() {
     }
+
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getMatricule() {
         return matricule;
@@ -33,6 +43,7 @@ public class Eleve {
     }
 
     public void setNom(String nom) {
+
         this.nom = nom;
     }
 
@@ -41,14 +52,17 @@ public class Eleve {
     }
 
     public void setPrenom(String prenom) {
+
         this.prenom = prenom;
     }
 
     public String getSexe() {
+
         return sexe;
     }
 
     public void setSexe(String sexe) {
+
         this.sexe = sexe;
     }
 
