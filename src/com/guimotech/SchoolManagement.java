@@ -1,6 +1,7 @@
 package com.guimotech;
 
 import com.guimotech.config.DBConfig;
+import com.guimotech.gui.swing.SglEleve;
 import com.guimotech.gui.swing.SglTrimestre;
 
 import java.sql.SQLException;
@@ -10,17 +11,23 @@ public class SchoolManagement {
         System.out.println("Welcome To School Maganament System");
 
         if(DBConfig.getInstance().openConnection(
-                "127.0.0.1", "5432", "db_exemple1",
+                "127.0.0.1", "", "db_exemple1",
                 "postgres", "postgres") == null) {
 
             System.out.println("Echec de connexion a la base de données ...");
             System.out.println("Verifier vos parametres de connexion.");
         }
 
-        boolean model = true;
-        SglTrimestre sglTerm = SglTrimestre.getInstance(null, model);
+        boolean modal = true;
+        SglTrimestre sglTerm = SglTrimestre.getInstance(null, modal);
 
         sglTerm.setVisible(true);
+
+        SglEleve sglEleve = SglEleve.getInstance(null, modal);
+
+        sglEleve.setVisible(true);
+
+
 //        sglTerm.dispose();
 
 /*
@@ -29,7 +36,7 @@ public class SchoolManagement {
         trimUX.ajouter();
         trimUX.supprimer();
 //*/
-        if(model)
+        if(modal)
             try {
                 DBConfig.getInstance().close();
             } catch (SQLException e) {
