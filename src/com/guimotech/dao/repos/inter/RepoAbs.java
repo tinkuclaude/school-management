@@ -9,11 +9,11 @@ public abstract class RepoAbs <ModelType, PKType>{
 
     public RepoAbs() {}
 
-    boolean create(ModelType obj) throws SQLException{
-        return true;
-    }
+//    boolean create(ModelType obj) throws SQLException{
+//        return true;
+//    }
 
-    public abstract boolean create(Trimestre obj) throws SQLException;
+    public abstract boolean create(ModelType obj) throws SQLException;
 
     public abstract boolean update(ModelType obj) throws SQLException;
 
