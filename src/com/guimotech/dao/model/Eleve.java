@@ -1,15 +1,18 @@
 package com.guimotech.dao.model;
 
+import java.sql.Date;
+
 public class Eleve {
 
+    private Long id;
     private String matricule;
     private String nom;
     private String prenom;
-    private String sexe;
-    private String datenaiss;
+    private Integer sexe;
+    private Date datenaiss;
 
-    public Eleve(String matricule, String nom, String prenom, String sexe, String datenaiss) {
-//        this.id = id;
+    public Eleve(Long id, String matricule, String nom, String prenom, Integer sexe, Date datenaiss) {
+        this.id = id;
         this.matricule = matricule;
         this.nom = nom;
         this.prenom = prenom;
@@ -20,13 +23,13 @@ public class Eleve {
     public Eleve() {
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getMatricule() {
         return matricule;
@@ -56,21 +59,21 @@ public class Eleve {
         this.prenom = prenom;
     }
 
-    public String getSexe() {
+    public Integer getSexe() {
 
         return sexe;
     }
 
-    public void setSexe(String sexe) {
+    public void setSexe(Integer sexe) {
 
         this.sexe = sexe;
     }
 
-    public String getDatenaiss() {
+    public Date getDatenaiss() {
         return datenaiss;
     }
 
-    public void setDatenaiss(String datenaiss) {
+    public void setDatenaiss(Date datenaiss) {
         this.datenaiss = datenaiss;
     }
 

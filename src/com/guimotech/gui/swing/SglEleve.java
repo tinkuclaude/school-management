@@ -1,5 +1,6 @@
 package com.guimotech.gui.swing;
 
+import com.guimotech.config.HelperService;
 import com.guimotech.dao.dto.EleveDTO;
 import com.guimotech.service.EleveService;
 
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
 
 public class SglEleve extends JDialog {
     // JFrame:
@@ -21,7 +23,7 @@ public class SglEleve extends JDialog {
     private JTextField jTextFieldMatricule = null;
     private JTextField jTextFieldNom = null;
     private JTextField jTextFieldPrenom = null;
-    private JTextField jTextFieldSexe = null;
+    private JComboBox<String> jComboBoxSexe = null;
     private JTextField jTextFieldDatenaiss = null;
 
     private JButton jButtonValidate = null;
@@ -34,23 +36,24 @@ public class SglEleve extends JDialog {
     // JPanel for button on south of frame
     private JPanel jPanelButtons = null;
 
+    private EleveDTO eleveDTO;
     private static SglEleve instance = null;
-    public static SglEleve getInstance(JFrame parent, boolean modal) {
+    public static SglEleve getInstance(JFrame parent, boolean modal, Long id) {
         if(instance != null) {
             // supprimer instance existante
             instance.dispose();
             instance = null;
         }
-        instance = new SglEleve(parent, modal);
+        instance = new SglEleve(parent, modal, id);
         return instance;
     }
 
-    private SglEleve(JFrame parent, boolean modal) {
+    private SglEleve(JFrame parent, boolean modal, Long id) {
         super(parent, modal);
-        initialize();
+        initialize(id);
     }
 
-    void initialize() {
+    void initialize(Long id) {
         this.setSize(300, 350);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un eleve");
@@ -63,6 +66,30 @@ public class SglEleve extends JDialog {
                 close();
             }
         });
+
+        if(id == null) eleveDTO = new EleveDTO();
+        else {
+            try {
+                eleveDTO = eleveService.getEleve(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                eleveDTO = new EleveDTO();
+            }
+        }
+
+        setFields();
+    }
+
+    private void setFields() {
+        jTextFieldMatricule.setText(eleveDTO.getMatricule());
+        jTextFieldNom.setText(eleveDTO.getNom());
+        jTextFieldPrenom.setText(eleveDTO.getPrenom());
+        if(eleveDTO.getSexe() == null)
+            jComboBoxSexe.setSelectedIndex(-1);
+        else jComboBoxSexe.setSelectedIndex(eleveDTO.getSexe());
+        if(eleveDTO.getDatenaiss() == null)
+            jTextFieldDatenaiss.setText("");
+        else jTextFieldDatenaiss.setText(HelperService.dateToString(eleveDTO.getDatenaiss()));
     }
 
     private JPanel getJContentPane() {
@@ -103,7 +130,7 @@ public class SglEleve extends JDialog {
             jPanelContents.add(jLabelPrenom);
             jPanelContents.add(getJTextFieldPrenom());
             jPanelContents.add(jLabelSexe);
-            jPanelContents.add(getJTextFieldSexe());
+            jPanelContents.add(getJComboBoxSexe());
             jPanelContents.add(jLabelDatenaiss);
             jPanelContents.add(getJTextFieldDatenaiss());
 
@@ -155,13 +182,15 @@ public class SglEleve extends JDialog {
         return jTextFieldPrenom;
     }
 
-    public JTextField getJTextFieldSexe() {
-        if(jTextFieldSexe == null) {
-            jTextFieldSexe = new JTextField();
-            jTextFieldSexe.setBorder(new LineBorder(new Color(0, 0, 0), 1));
-            jTextFieldSexe.setBounds(120, 130, 100, 25);
+    public JComboBox<String> getJComboBoxSexe() {
+        if(jComboBoxSexe == null) {
+            jComboBoxSexe = new JComboBox<>();
+            jComboBoxSexe.addItem("Masculin");
+            jComboBoxSexe.addItem("Feminin");
+            jComboBoxSexe.setBorder(new LineBorder(new Color(0, 0, 0), 1));
+            jComboBoxSexe.setBounds(120, 130, 100, 25);
         }
-        return jTextFieldSexe;
+        return jComboBoxSexe;
     }
 
     public JTextField getJTextFieldDatenaiss() {
@@ -189,25 +218,34 @@ public class SglEleve extends JDialog {
 
     void validated(){
 
-        EleveDTO dto = new EleveDTO();
-        String matricule = new String();
+        String matricule = jTextFieldMatricule.getText();
+        String nom = jTextFieldNom.getText();
+        String prenom = jTextFieldPrenom.getText();
+        Integer sexe = jComboBoxSexe.getSelectedIndex();
+        String dateStr = jTextFieldDatenaiss.getText();
+
+        Date dateNaiss = null;
+
+        if(!dateStr.trim().equals(""))
+            try {
+                dateNaiss = HelperService.stringToDate(dateStr);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog (this,
+                        "Entrer une date au bon format",
+                        "School Management", JOptionPane.INFORMATION_MESSAGE);
+                jTextFieldMatricule.requestFocus();
+                jTextFieldMatricule.selectAll();
+                return;
+            }
+
+        eleveDTO.setMatricule(matricule);
+        eleveDTO.setNom(nom);
+        eleveDTO.setPrenom(prenom);
+        eleveDTO.setSexe(sexe);
+        eleveDTO.setDatenaiss(dateNaiss);
 
         try {
-//            matricule = String.(jTextFieldMatricule.getText());
-            dto.setMatricule(matricule);
-        }
-        catch (Exception e) {
-            JOptionPane.showMessageDialog (this,
-                    "Entrer un entier valide",
-                    "School Management", JOptionPane.INFORMATION_MESSAGE);
-            jTextFieldMatricule.requestFocus();
-            jTextFieldMatricule.selectAll();
-            return;
-        }
-        dto.setNom(jTextFieldNom.getText());
-
-        try {
-            eleveService.save(dto);
+            eleveDTO = eleveService.save(eleveDTO);
             JOptionPane.showMessageDialog (this,
                     "Eleve enregistré avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
@@ -233,11 +271,9 @@ public class SglEleve extends JDialog {
         return jButtonNew;
     }
     private void nouveau() {
-        jTextFieldMatricule.setText("");
-        jTextFieldNom.setText("");
-        jTextFieldPrenom.setText("");
-        jTextFieldSexe.setText("");
-        jTextFieldDatenaiss.setText("");
+        eleveDTO = new EleveDTO();
+        setFields();
+        jTextFieldMatricule.requestFocus();
     }
 
     public JButton getJButtonDelete() {
@@ -256,20 +292,7 @@ public class SglEleve extends JDialog {
 
     private void supprimer() {
 
-        String idStr = jTextFieldMatricule.getText();
-        String key;
-        try {
-//            key = Integer.parseInt(matriculeStr);
-            key = (idStr);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog (this,
-                    "Entrer un entier valide",
-                    "School Management", JOptionPane.INFORMATION_MESSAGE);
-            jTextFieldMatricule.requestFocus();
-            jTextFieldMatricule.selectAll();
-            return;
-        }
-
+        String key = jTextFieldMatricule.getText();
 
         try {
             eleveService.delete(key);
@@ -278,7 +301,7 @@ public class SglEleve extends JDialog {
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
             System.out.println();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             JOptionPane.showMessageDialog (this,
                     e.getMessage(),
                     "School Management", JOptionPane.INFORMATION_MESSAGE);

@@ -27,28 +27,34 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
 
     @Override
     public boolean create(Eleve obj) throws SQLException {
-        String sql = "INSERT into Eleve (matricule, nom, prenom, sexe, datenaiss) values (?, ?, ?, ?, ?);";
+        String sql = "INSERT into Eleve (matricule, nom, prenom, sexe, date_naiss) " +
+                " values (?, ?, ?, ?, ?) returning id;";
 
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
         ps.setString(1, obj.getMatricule());
         ps.setString(2, obj.getNom());
         ps.setString(3, obj.getPrenom());
-        ps.setString(4, obj.getSexe());
-        ps.setString(5, obj.getDatenaiss());
+        ps.setObject(4, obj.getSexe());
+        ps.setDate(5, obj.getDatenaiss());
 
-        return ps.executeUpdate() > 0;
+        ResultSet res = ps.executeQuery();
+        if(res != null && res.next()) {
+            obj.setId(res.getLong("id"));
+        }
+        return obj.getId() != null;
     }
 
     @Override
     public boolean update(Eleve obj) throws SQLException {
-        String sql = "UPDATE eleve set nom = ? prenom = ? sexe = ? datenaiss = ? where id = ?;";
+        String sql = "UPDATE eleve set matricule = ?, nom = ?, prenom = ?, sexe = ?, date_naiss = ? where id = ?;";
 
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
         ps.setString(1, obj.getMatricule());
         ps.setString(2, obj.getNom());
         ps.setString(3, obj.getPrenom());
-        ps.setString(4, obj.getSexe());
-        ps.setString(5, obj.getDatenaiss());
+        ps.setObject(4, obj.getSexe());
+        ps.setDate(5, obj.getDatenaiss());
+        ps.setLong(6, obj.getId());
 
         return ps.executeUpdate() >= 0;
 
@@ -56,17 +62,14 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
 
     @Override
     public Eleve save(Eleve obj) throws SQLException {
-        Eleve eleve = findById(obj.getMatricule());
-        if(eleve.getMatricule() == null) {
+
+        if(obj.getId() == null) {
             create(obj);
-//            trim = findById(obj.getNumero());
         }
         else {
             update(obj);
         }
-        eleve = obj;
-
-        return eleve;
+        return obj;
     }
 
     @Override
@@ -79,15 +82,38 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
         ps.setString(1, key);
 
         ResultSet res = ps.executeQuery();
-        if(res != null) {
-            if(res.next()) {
-                eleve.setMatricule(res.getString("matricule"));
-                eleve.setNom(res.getString("nom"));
-                eleve.setPrenom(res.getString("prenom"));
-                eleve.setSexe(res.getString("sexe"));
-                eleve.setDatenaiss(res.getString("datnaiss"));
-            }
+        if(res != null && res.next()) {
+            eleve = getDataModel(res);
         }
+
+        return eleve;
+    }
+
+    public Eleve findById(Long key) throws SQLException {
+
+        Eleve eleve = new Eleve();
+
+        String sql = "SELECT * FROM ELEVE WHERE ID = ?;";
+        PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
+        ps.setLong(1, key);
+
+        ResultSet res = ps.executeQuery();
+        if(res != null && res.next()) {
+            eleve = getDataModel(res);
+        }
+
+        return eleve;
+    }
+
+    private Eleve getDataModel(ResultSet res) throws SQLException {
+        Eleve eleve = new Eleve();
+
+        eleve.setId(res.getLong("id"));
+        eleve.setMatricule(res.getString("matricule"));
+        eleve.setNom(res.getString("nom"));
+        eleve.setPrenom(res.getString("prenom"));
+        eleve.setSexe((Integer) res.getObject("sexe"));
+        eleve.setDatenaiss(res.getDate("date_naiss"));
 
         return eleve;
     }
@@ -103,14 +129,7 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
         ResultSet res = ps.executeQuery(sql);
         if(res != null) {
             while(res.next()) {
-                Eleve eleve = new Eleve();
-//                eleve.setId(res.getLong("id"));
-                eleve.setMatricule(res.getString("matricule"));
-                eleve.setNom(res.getString("nom"));
-                eleve.setPrenom(res.getString("prenom"));
-                eleve.setSexe(res.getString("sexe"));
-                eleve.setDatenaiss(res.getString("datenaiss"));
-                eleves.add(eleve);
+                eleves.add(getDataModel(res));
             }
         }
 
@@ -127,6 +146,15 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
         return ps.executeUpdate() > 0;
     }
 
+    public boolean delete(Long key) throws SQLException {
+        String sql = "DELETE FROM Eleve where id = ?;";
+
+        PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
+        ps.setLong(1, key);
+
+        return ps.executeUpdate() > 0;
+    }
+
     @Override
     public boolean deleteOne(Eleve obj) throws SQLException {
         return delete(obj.getMatricule());
@@ -138,6 +166,6 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
 
         Statement ps = dbConfig.getConnection().createStatement();
 
-        return ps.executeUpdate(sql) > 0;
+        return ps.executeUpdate(sql) >= 0;
     }
 }
