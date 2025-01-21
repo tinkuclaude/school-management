@@ -1,9 +1,7 @@
 package com.guimotech.gui.swing;
 
 import com.guimotech.dao.dto.NiveauDTO;
-import com.guimotech.dao.dto.TrimestreDTO;
 import com.guimotech.service.NiveauService;
-import com.guimotech.service.TrimestreService;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -22,7 +20,7 @@ public class SglNiveau extends JDialog {
 
     private JTextField jTextFieldCode = null;
     private JTextField jTextFieldIntitule = null;
-    private JTextField jTextFieldFrais_inscription=null;
+    private JTextField jTextFieldFraisInscription =null;
 
     private JButton jButtonValidate = null;
     private JButton jButtonNew = null;
@@ -36,25 +34,27 @@ public class SglNiveau extends JDialog {
 
     private static SglNiveau instance = null;
 
+    private NiveauDTO niveauDTO = new NiveauDTO();
+
 //    public SglNiveau(JFrame parent, boolean modal) {
 //    }
 
-    public static SglNiveau getInstance(JFrame parent, boolean modal) {
+    public static SglNiveau getInstance(JFrame parent, boolean modal, Long id) {
         if(instance != null) {
             // supprimer instance existante
             instance.dispose();
             instance = null;
         }
-        instance = new SglNiveau(parent, modal);
+        instance = new SglNiveau(parent, modal, id);
         return instance;
     }
 
-    private SglNiveau(JFrame parent, boolean modal) {
-    super(parent, modal);
-        initialize();
+    private SglNiveau(JFrame parent, boolean modal, Long id) {
+        super(parent, modal);
+        initialize(id);
     }
 
-    void initialize() {
+    void initialize(Long id) {
         this.setSize(300, 200);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un niveau");
@@ -66,6 +66,27 @@ public class SglNiveau extends JDialog {
                 close();
             }
         });
+
+        if(id == null) {
+            niveauDTO = new NiveauDTO();
+        }
+        else {
+            try {
+                niveauDTO = niveauService.getNiveau(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        setFields();
+    }
+
+    private void setFields() {
+        jTextFieldCode.setText(niveauDTO.getCode());
+        jTextFieldIntitule.setText(niveauDTO.getIntitule());
+        if(niveauDTO.getFrais_inscription() == null)
+            jTextFieldFraisInscription.setText("");
+        else jTextFieldFraisInscription.setText(String.valueOf(niveauDTO.getFrais_inscription()));
     }
 
     private JPanel getJContentPane() {
@@ -80,8 +101,9 @@ public class SglNiveau extends JDialog {
 
     public JPanel getjPanelContents() {
         if(jPanelContents == null) {
-            JLabel jLabelId = new JLabel("Id");
-            jLabelId.setBounds(10, 10, 100, 25);
+
+//            JLabel jLabelId = new JLabel("Id");
+//            jLabelId.setBounds(10, 10, 100, 25);
 
 
             JLabel jLabelCode = new JLabel("Code");
@@ -90,32 +112,24 @@ public class SglNiveau extends JDialog {
             JLabel jLabelIntitule = new JLabel("Intitulé");
             jLabelIntitule.setBounds(10, 50, 100, 25);
 
-            JLabel jLabelFrais_inscription = new JLabel("Code");
-            jLabelFrais_inscription.setBounds(10, 10, 100, 25);
+            JLabel jLabelFraisInscription = new JLabel("Frais Insc.");
+            jLabelFraisInscription.setBounds(10, 90, 100, 25);
 
 
             jPanelContents = new JPanel();
             jPanelContents.setLayout(null);
             jPanelContents.setBorder(new LineBorder(new Color(25, 100, 250), 2));
-            jPanelContents.add(jLabelId);
-            jPanelContents.add(getJTextFieldId());
+//            jPanelContents.add(jLabelId);
+//            jPanelContents.add(getJTextFieldId());
             jPanelContents.add(jLabelCode);
             jPanelContents.add(getJTextFieldCode());
             jPanelContents.add(jLabelIntitule);
             jPanelContents.add(getJTextFieldIntitule());
-            jPanelContents.add(jLabelFrais_inscription);
-            jPanelContents.add(getJTextFieldFrais_inscription());
+            jPanelContents.add(jLabelFraisInscription);
+            jPanelContents.add(getjTextFieldFraisInscription());
 
         }
         return jPanelContents;
-    }
-
-    private Component getJTextFieldFrais_inscription() {
-        return null;
-    }
-
-    private Component getJTextFieldId() {
-        return null;
     }
 
 //    private Component getJTextFieldCode() {
@@ -151,13 +165,13 @@ public class SglNiveau extends JDialog {
         }
         return jTextFieldIntitule;
     }
-    public JTextField getjTextFieldFrais_inscription() {
-        if(jTextFieldFrais_inscription == null) {
-            jTextFieldFrais_inscription = new JTextField();
-            jTextFieldFrais_inscription.setBorder(new LineBorder(new Color(0, 0, 0), 1));
-            jTextFieldFrais_inscription.setBounds(120, 50, 100, 25);
+    public JTextField getjTextFieldFraisInscription() {
+        if(jTextFieldFraisInscription == null) {
+            jTextFieldFraisInscription = new JTextField();
+            jTextFieldFraisInscription.setBorder(new LineBorder(new Color(0, 0, 0), 1));
+            jTextFieldFraisInscription.setBounds(120, 90, 100, 25);
         }
-        return jTextFieldFrais_inscription;
+        return jTextFieldFraisInscription;
     }
     public JButton getJButtonValidate() {
         if(jButtonValidate == null) {
@@ -175,28 +189,63 @@ public class SglNiveau extends JDialog {
 
     void validated(){
 
-        NiveauDTO dto = new NiveauDTO();
-        String code= new String();
+//        NiveauDTO dto = new NiveauDTO();
 
-        try {
-
-            dto.setCode(code);
-        } catch (Exception e) {
+        String code = jTextFieldCode.getText();
+        if (code.trim().equals("")){
             JOptionPane.showMessageDialog (this,
-                    "Entrer un entier valide",
+                    "Entrer le code du niveau",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
             jTextFieldCode.requestFocus();
             jTextFieldCode.selectAll();
             return;
         }
-        dto.setIntitule(jTextFieldIntitule.getText());
+
+        String intitule = jTextFieldIntitule.getText();
+        if (intitule.trim().equals("")){
+            JOptionPane.showMessageDialog (this,
+                    "Entrer le code du niveau",
+                    "School Management", JOptionPane.INFORMATION_MESSAGE);
+            jTextFieldIntitule.requestFocus();
+            jTextFieldIntitule.selectAll();
+            return;
+        }
+
+        String frais = jTextFieldFraisInscription.getText();
+        Integer fraisInscription = null;
+
+        if(!frais.trim().equals("")) {
+            try {
+                fraisInscription = Integer.parseInt(frais.trim());
+                if(fraisInscription < 0) {
+                    JOptionPane.showMessageDialog (this,
+                            "Entrer un frais d'inscription valide",
+                            "School Management", JOptionPane.INFORMATION_MESSAGE);
+                    jTextFieldFraisInscription.requestFocus();
+                    jTextFieldFraisInscription.selectAll();
+                    return;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog (this,
+                        "Entrer un momtant valide",
+                        "School Management", JOptionPane.INFORMATION_MESSAGE);
+                jTextFieldFraisInscription.requestFocus();
+                jTextFieldFraisInscription.selectAll();
+                return;
+            }
+        }
+
+        niveauDTO.setCode(code);
+        niveauDTO.setIntitule(intitule);
+        niveauDTO.setFrais_inscription(fraisInscription);
 
         try {
-            niveauService.save(dto);
+            niveauDTO = niveauService.save(niveauDTO);
             JOptionPane.showMessageDialog (this,
                     "Niveau enregistré avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog (this,
                     e.getMessage(),
                     "School Management", JOptionPane.ERROR_MESSAGE);
@@ -218,10 +267,9 @@ public class SglNiveau extends JDialog {
     }
 
     private void nouveau() {
-        jTextFieldCode.setText("");
-        jTextFieldIntitule.setText("");
-        jTextFieldFrais_inscription.setText("");
-
+        niveauDTO = new NiveauDTO();
+        setFields();
+        jTextFieldCode.requestFocus();
     }
 
     public JButton getJButtonDelete() {
@@ -240,26 +288,14 @@ public class SglNiveau extends JDialog {
 
     private void supprimer() {
 
-        String codeStr = jTextFieldCode.getText();
-       String key;
-        try {
-            key = (codeStr);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog (this,
-                    "Entrer un entier valide",
-                    "School Management", JOptionPane.INFORMATION_MESSAGE);
-            jTextFieldCode.requestFocus();
-            jTextFieldCode.selectAll();
-            return;
-        }
-
+        String key = jTextFieldCode.getText();
 
         try {
             niveauService.delete(key);
             JOptionPane.showMessageDialog (this,
                     "Trimestre supprimé avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog (this,
@@ -267,6 +303,7 @@ public class SglNiveau extends JDialog {
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
     void close() {
         instance.dispose();
         instance = null;

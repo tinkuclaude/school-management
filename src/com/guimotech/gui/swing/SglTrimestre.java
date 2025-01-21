@@ -32,6 +32,13 @@ public class SglTrimestre extends JDialog {
     private JPanel jPanelButtons = null;
 
     private static SglTrimestre instance = null;
+
+    /**
+     * Create a new instance of SglTrimestre windows
+     * @param parent c'est le frame parent
+     * @param modal dit si la fenetre est modal
+     * @return SglTrimestre the new created instance
+     */
     public static SglTrimestre getInstance(JFrame parent, boolean modal) {
         if(instance != null) {
             // supprimer instance existante
@@ -92,6 +99,11 @@ public class SglTrimestre extends JDialog {
         return jPanelContents;
     }
 
+    /**
+     * Ceci contruire le composant des Buttons si il n'existe pas
+     * @return JPanel le composant JPanel construit
+     * @see SglTrimestre
+     */
     public JPanel getJPanelButtons() {
         if(jPanelButtons == null) {
             jPanelButtons = new JPanel();

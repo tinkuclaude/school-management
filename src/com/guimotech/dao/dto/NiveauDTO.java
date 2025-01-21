@@ -2,40 +2,26 @@ package com.guimotech.dao.dto;
 
 public class NiveauDTO {
 
-
-//    public NiveauDTO(Long id, String code, String intitule, Integer frais_insciption) {
-//
-//    }
-//
-//    public NiveauDTO(Long id, String code, String intitule, Integer fraisInsciption) {
-//    }
-
-        public NiveauDTO(long id, String code, String intitule, Integer fraisInsciption) {
-        }
-
-        public void setCode(Object code) {
-        }
-
-        private long id;
+        private Long id;
         private String code;
         private String intitule;
-        private Integer frais_insciption;
+        private Integer frais_inscription;
 
         public NiveauDTO(Long id,String code, String intitule, Integer frais_insciption ) {
             this.id=id;
             this.code = code;
             this.intitule = intitule;
-            this.frais_insciption=frais_insciption;
+            this.frais_inscription =frais_insciption;
         }
 
         public NiveauDTO() {
         }
 
-        public long getId() {
+        public Long getId() {
             return id;
         }
 
-        public void setId(long id) {
+        public void setId(Long id) {
             this.id = id;
         }
 
@@ -59,17 +45,17 @@ public class NiveauDTO {
             this.intitule = intitule;
         }
 
-        public Integer getFrais_insciption() {
-            return frais_insciption;
+        public Integer getFrais_inscription() {
+            return frais_inscription;
         }
 
-        public void setFrais_insciption(Integer frais_insciption) {
-            this.frais_insciption = frais_insciption;
+        public void setFrais_inscription(Integer frais_inscription) {
+            this.frais_inscription = frais_inscription;
         }
 
         @Override
         public String toString() {
-            return "Id: "+id+ "Code: "+code+" Intitule: "+intitule+"frais_insciption:"+frais_insciption;
+            return "Id: "+id+ "Code: "+code+" Intitule: "+intitule+"frais_insciption:"+ frais_inscription;
         }
 
 

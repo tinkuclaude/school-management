@@ -1,27 +1,24 @@
 package com.guimotech.dao.model;
 
 public class Niveau {
-    private long id;
+    private Long id;
     private String code;
     private String intitule;
-    private Integer frais_insciption;
+    private Integer frais_inscription;
 
     public Niveau(Long id, String code, String intitule, Integer frais_insciption) {
         this.id=id;
         this.code = code;
         this.intitule = intitule;
-        this.frais_insciption=frais_insciption;
+        this.frais_inscription = frais_insciption;
     }
 
     public Niveau() {
     }
 
-//
-//    public Niveau(Long id, String code, String intitule, Integer frais_insciption) {
-//    }
-//
-//    public Niveau(long id, String code, String intitule, Integer fraisInsciption) {
-//    }
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -43,26 +40,15 @@ public class Niveau {
         this.intitule = intitule;
     }
 
-    public Integer getFrais_insciption() {
-        return frais_insciption;
+    public Integer getFrais_inscription() {
+        return frais_inscription;
     }
 
-    public void setFrais_insciption(Integer frais_insciption) {
+    public void setFrais_inscription(Integer frais_inscription) {
 
-        this.frais_insciption = frais_insciption;
+        this.frais_inscription = frais_inscription;
     }
 
-    public int getFrais_inscription() {
-        return 0;
-    }
-
-    public long getId() {
-        return 0;
-    }
-
-
-    public void setFrais_inscription(int fraisInscription) {
-    }
 
 }
 

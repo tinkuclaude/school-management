@@ -2,7 +2,6 @@ package com.guimotech.dao.repos;
 
 import com.guimotech.config.DBConfig;
 import com.guimotech.dao.model.Niveau;
-import com.guimotech.dao.model.Trimestre;
 import com.guimotech.dao.repos.inter.RepoAbs;
 
 import java.sql.PreparedStatement;
@@ -28,7 +27,7 @@ public class NiveauRepo extends RepoAbs<Niveau, String> {
 
     @Override
     public boolean create(Niveau obj) throws SQLException {
-        String sql = "INSERT into niveau (code, intitule, frais-inscription) values (?, ?,?);";
+        String sql = "INSERT into niveau (code, intitule, frais_inscription) values (?, ?,?) returning id ;";
 
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
 //        ps.setId(1, obj.getId());
@@ -36,18 +35,25 @@ public class NiveauRepo extends RepoAbs<Niveau, String> {
         ps.setString(2, obj.getIntitule());
         ps.setInt(3, obj.getFrais_inscription());
 
+        ResultSet res = ps.executeQuery();
+        if(res != null && res.next()) {
+            obj.setId(res.getLong("id"));
+        } else {
+            obj.setId(null);
+        }
 
-        return ps.executeUpdate() > 0;
+        return obj.getId() != null;
     }
 
     @Override
     public boolean update(Niveau obj) throws SQLException {
-        String sql = "UPDATE Niveau set code = ? intitule=? frais-inscription where code = ?;";
+        String sql = "UPDATE Niveau set code = ?, intitule=?, frais_inscription=? where id = ?;";
 
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
         ps.setString(1, obj.getCode());
         ps.setString(2, obj.getIntitule());
-        ps.setInt(3, obj.getFrais_insciption());
+        ps.setInt(3, obj.getFrais_inscription());
+        ps.setLong(4, obj.getId());
 
         return ps.executeUpdate() >= 0;
 
@@ -55,44 +61,55 @@ public class NiveauRepo extends RepoAbs<Niveau, String> {
 
     @Override
     public Niveau save(Niveau obj) throws SQLException{
-        Niveau niveau = findById(obj.getCode());
-        if(niveau.getCode() == null) {
+//        Niveau niveau = findById(obj.getId());
+        if(obj.getId() == null) {
             create(obj);
-//            niveau = findById(obj.getCode());
         }
         else {
             update(obj);
         }
-        niveau = obj;
-
-        return niveau;
+        return obj;
     }
-
-//    @Override
-//    public Niveau findById(String key) throws SQLException {
-//        return null;
-//    }
 
 
     @Override
-    public Niveau findById(String key) throws SQLException {
+    public Niveau findById(String code) throws SQLException {
 
-       Niveau niveau = new Niveau();
 
         String sql = "SELECT * FROM NIVEAU WHERE CODE = ?;";
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
-        ps.setString(1, key);
+        ps.setString(1, code);
 
         ResultSet res = ps.executeQuery();
+        return  getDataModel(res);
+    }
+
+    public Niveau findById(Long id) throws SQLException {
+
+        String sql = "SELECT * FROM NIVEAU WHERE ID = ?;";
+        PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
+        ps.setLong(1, id);
+
+        ResultSet res = ps.executeQuery();
+        return  getDataModel(res);
+    }
+
+    private Niveau getDataModel(ResultSet res) throws SQLException {
+
         if(res != null) {
             if(res.next()) {
-                niveau.setCode(res.getString("code"));
-                niveau.setIntitule(res.getString("intitule"));
-                niveau.setFrais_inscription(res.getInt("frais_inscription"));
-
+                return getData(res);
             }
         }
+        return new Niveau();
+    }
 
+    private Niveau getData(ResultSet res) throws SQLException {
+        Niveau niveau = new Niveau();
+        niveau.setId(res.getLong("id"));
+        niveau.setCode(res.getString("code"));
+        niveau.setIntitule(res.getString("intitule"));
+        niveau.setFrais_inscription(res.getInt("frais_inscription"));
         return niveau;
     }
 
@@ -107,11 +124,7 @@ public class NiveauRepo extends RepoAbs<Niveau, String> {
         ResultSet res = ps.executeQuery(sql);
         if(res != null) {
             while(res.next()) {
-                Niveau niveau = new Niveau();
-                niveau.setCode(res.getString("code"));
-                niveau.setIntitule(res.getString("intitule"));
-                niveau.setFrais_insciption(res.getInt("frais_inscrption"));
-                niveaux.add(niveau);
+                niveaux.add(getData(res));
             }
         }
 
@@ -133,9 +146,18 @@ public class NiveauRepo extends RepoAbs<Niveau, String> {
         return ps.executeUpdate() > 0;
     }
 
+    public boolean delete(Long key) throws SQLException {
+        String sql = "DELETE FROM Niveau where id = ?;";
+
+        PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
+        ps.setLong(1, key);
+
+        return ps.executeUpdate() > 0;
+    }
+
     @Override
     public boolean deleteOne(Niveau obj) throws SQLException {
-        return delete(obj.getCode());
+        return delete(obj.getId());
     }
 
     @Override
@@ -144,7 +166,7 @@ public class NiveauRepo extends RepoAbs<Niveau, String> {
 
         Statement ps = dbConfig.getConnection().createStatement();
 
-        return ps.executeUpdate(sql) > 0;
+        return ps.executeUpdate(sql) >= 0;
     }
 }
 
