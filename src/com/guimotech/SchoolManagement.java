@@ -1,11 +1,9 @@
 package com.guimotech;
 
 import com.guimotech.config.DBConfig;
-<<<<<<< HEAD
+
 import com.guimotech.gui.swing.SglNiveau;
-=======
 import com.guimotech.gui.swing.SglEleve;
->>>>>>> eleve
 import com.guimotech.gui.swing.SglTrimestre;
 
 import java.sql.SQLException;
