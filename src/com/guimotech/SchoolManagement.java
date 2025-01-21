@@ -1,7 +1,11 @@
 package com.guimotech;
 
 import com.guimotech.config.DBConfig;
+<<<<<<< HEAD
 import com.guimotech.gui.swing.SglNiveau;
+=======
+import com.guimotech.gui.swing.SglEleve;
+>>>>>>> eleve
 import com.guimotech.gui.swing.SglTrimestre;
 
 import java.sql.SQLException;
@@ -21,11 +25,18 @@ public class SchoolManagement {
         }
 
         boolean modal = true;
-//        SglTrimestre sglTerm = SglTrimestre.getInstance(null, modal);
-//        sglTerm.setVisible(true);
+        
+        SglTrimestre sglTerm = SglTrimestre.getInstance(null, modal);
+        sglTerm.setVisible(true);
+
 
         SglNiveau sglNiveau = SglNiveau.getInstance(null, modal, 38L);
         sglNiveau.setVisible(true);
+
+
+        SglEleve sglEleve = SglEleve.getInstance(null, modal, 3l);
+        sglEleve.setVisible(true);
+
 //        sglTerm.dispose();
 
 /*

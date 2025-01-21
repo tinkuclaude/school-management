@@ -1,0 +1,89 @@
+package com.guimotech.dao.dto;
+
+import java.sql.Date;
+
+public class EleveDTO {
+
+    private Long id;
+    private String matricule;
+    private String nom;
+    private String prenom;
+    private Integer sexe;
+    private Date datenaiss;
+
+    public EleveDTO(Long id, String matricule, String nom, String prenom, Integer sexe, Date datenaiss) {
+            this.id = id;
+        this.matricule = matricule;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.sexe = sexe;
+        this.datenaiss = datenaiss;
+    }
+
+    public EleveDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMatricule() {
+
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+
+        this.matricule = matricule;
+    }
+
+    public String getNom() {
+
+        return nom;
+    }
+
+    public void setNom(String nom) {
+
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+
+        this.prenom = prenom;
+    }
+
+    public Integer getSexe() {
+
+        return sexe;
+    }
+
+    public void setSexe(Integer sexe) {
+
+        this.sexe = sexe;
+    }
+
+    public Date getDatenaiss() {
+
+        return datenaiss;
+    }
+
+    public void setDatenaiss(Date datenaiss) {
+
+        this.datenaiss = datenaiss;
+    }
+
+    @Override
+    public String toString() {
+        return " matricule: "+ matricule +" nom: "+ nom +" prenom: "+ prenom +" sexe: "+ sexe +" datenaiss: "+ datenaiss;
+    }
+
+}
