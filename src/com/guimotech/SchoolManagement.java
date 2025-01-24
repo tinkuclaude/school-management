@@ -2,6 +2,7 @@ package com.guimotech;
 
 import com.guimotech.config.DBConfig;
 
+import com.guimotech.gui.swing.SglEnseignant;
 import com.guimotech.gui.swing.SglNiveau;
 import com.guimotech.gui.swing.SglEleve;
 import com.guimotech.gui.swing.SglTrimestre;
@@ -13,7 +14,7 @@ public class SchoolManagement {
         System.out.println("Welcome To School Maganament System");
 
         if(DBConfig.getInstance().openConnection(
-                "127.0.0.1", "5432", "db_exemple1",
+                "127.0.0.1", "5432", "db_exemple",
                 "postgres", "postgres") == null) {
 
             System.out.println("Echec de connexion a la base de données ...");
@@ -32,8 +33,11 @@ public class SchoolManagement {
         sglNiveau.setVisible(true);
 
 
-        SglEleve sglEleve = SglEleve.getInstance(null, modal, 3l);
+        SglEleve sglEleve = SglEleve.getInstance(null, modal,3L);
         sglEleve.setVisible(true);
+
+        SglEnseignant sglEnseignant = SglEnseignant.getInstance(null, modal, 3l);
+        sglEnseignant.setVisible(true);
 
 //        sglTerm.dispose();
 
