@@ -51,21 +51,21 @@ public class SglEleve extends JDialog {
     private SglEleve(JFrame parent, boolean modal, Long id) {
         super(parent, modal);
         initialize(id);
+        setLocationRelativeTo(parent);
     }
 
     void initialize(Long id) {
         this.setSize(300, 350);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un eleve");
-        //this.setIconImage();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-
-                close();
-            }
-        });
+//        this.addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosing(WindowEvent e) {
+//                close();
+//            }
+//        });
 
         if(id == null) eleveDTO = new EleveDTO();
         else {

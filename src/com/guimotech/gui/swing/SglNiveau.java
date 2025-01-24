@@ -52,20 +52,21 @@ public class SglNiveau extends JDialog {
     private SglNiveau(JFrame parent, boolean modal, Long id) {
         super(parent, modal);
         initialize(id);
+        setLocationRelativeTo(parent);
     }
 
     void initialize(Long id) {
         this.setSize(300, 200);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un niveau");
-        //this.setIconImage();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                close();
-            }
-        });
+//        this.addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosing(WindowEvent e) {
+//                close();
+//            }
+//        });
 
         if(id == null) {
             niveauDTO = new NiveauDTO();
