@@ -61,11 +61,6 @@ public class EnseignantService {
             throw new Exception("Entrer la civilite de l'enseignant");
         }
 
-//        if(eleveDTO.getDatenaiss() == null) {
-//            // throw an Exception
-//            throw new Exception("Entrer la date de naissance de l'eleve");
-//        }
-
         Enseignant enseignant;
         if(enseignantDTO.getId() == null) {
             // create
