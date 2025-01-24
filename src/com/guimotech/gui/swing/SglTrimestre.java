@@ -52,20 +52,21 @@ public class SglTrimestre extends JDialog {
     private SglTrimestre(JFrame parent, boolean modal) {
         super(parent, modal);
         initialize();
+        setLocationRelativeTo(parent);
     }
 
     void initialize() {
         this.setSize(300, 200);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un trimestre");
-        //this.setIconImage();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                close();
-            }
-        });
+//        this.addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosing(WindowEvent e) {
+//                close();
+//            }
+//        });
     }
 
     private JPanel getJContentPane() {

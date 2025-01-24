@@ -2,12 +2,7 @@ package com.guimotech;
 
 import com.guimotech.config.DBConfig;
 
-import com.guimotech.gui.swing.SglClasse;
-import com.guimotech.gui.swing.SglNiveau;
-import com.guimotech.gui.swing.SglEleve;
-import com.guimotech.gui.swing.SglTrimestre;
-
-import java.sql.SQLException;
+import com.guimotech.gui.swing.FrmAccueil;
 
 public class SchoolManagement {
     public static void main(String[] args) {
@@ -23,21 +18,20 @@ public class SchoolManagement {
             return;
         }
 
-        boolean modal = true;
-        
-        SglTrimestre sglTerm = SglTrimestre.getInstance(null, modal);
-        sglTerm.setVisible(true);
+        FrmAccueil.getInstance().setVisible(true);
 
-
-        SglNiveau sglNiveau = SglNiveau.getInstance(null, modal, 38L);
-        sglNiveau.setVisible(true);
-
-
-        SglEleve sglEleve = SglEleve.getInstance(null, modal, 3l);
-        sglEleve.setVisible(true);
-
-        SglClasse sglClasse = SglClasse.getInstance(null, modal, 30L);
-        sglClasse.setVisible(true);
+//        boolean modal = true;
+//
+//        SglTrimestre sglTerm = SglTrimestre.getInstance(null, modal);
+//        sglTerm.setVisible(true);
+//
+//
+//        SglNiveau sglNiveau = SglNiveau.getInstance(null, modal, 38L);
+//        sglNiveau.setVisible(true);
+//
+//
+//        SglEleve sglEleve = SglEleve.getInstance(null, modal, 3l);
+//        sglEleve.setVisible(true);
 
 
 //        sglTerm.dispose();
@@ -48,12 +42,12 @@ public class SchoolManagement {
         trimUX.ajouter();
         trimUX.supprimer();
 //*/
-        if(modal)
-            try {
-                DBConfig.getInstance().close();
-            } catch (SQLException e) {
-                System.out.println("La connexion à la BD a echouée");
-            }
+//        if(modal)
+//            try {
+//                DBConfig.getInstance().close();
+//            } catch (SQLException e) {
+//                System.out.println("La connexion à la BD a echouée");
+//            }
         System.out.println("Merci d'avoir utilisé ce Systeme");
     }
 }
