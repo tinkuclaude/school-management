@@ -58,7 +58,7 @@ public class EnseignantService {
         if(enseignantDTO.getCivilite() == null ||
                 enseignantDTO.getCivilite() == -1) {
             // throw an Exception
-            throw new Exception("Entrer le sexe de l'enseignant");
+            throw new Exception("Entrer la civilite de l'enseignant");
         }
 
 //        if(eleveDTO.getDatenaiss() == null) {

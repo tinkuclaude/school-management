@@ -35,7 +35,7 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
         ps.setString(1, obj.getMatricule());
         ps.setString(2, obj.getNom());
         ps.setString(3, obj.getPrenom());
-        ps.setInt(4, obj.getCivilite());
+        ps.setObject(4, obj.getCivilite());
         ps.setDate(5, obj.getDatenaiss());
         ps.setString(6, obj.getTelephone());
 
@@ -54,7 +54,7 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
         ps.setString(1, obj.getMatricule());
         ps.setString(2, obj.getNom());
         ps.setString(3, obj.getPrenom());
-        ps.setInt(4, obj.getCivilite());
+        ps.setObject(4, obj.getCivilite());
         ps.setDate(5, obj.getDatenaiss());
         ps.setString(6, obj.getTelephone());
         ps.setLong(7, obj.getId());
@@ -115,7 +115,7 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
         enseignant.setMatricule(res.getString("matricule"));
         enseignant.setNom(res.getString("nom"));
         enseignant.setPrenom(res.getString("prenom"));
-        enseignant.setCivilite(res.getInt("civilite"));
+        enseignant.setCivilite((Integer) res.getObject("civilite"));
         enseignant.setDatenaiss(res.getDate("date_naiss"));
         enseignant.setTelephone(res.getString("telephone"));
 
