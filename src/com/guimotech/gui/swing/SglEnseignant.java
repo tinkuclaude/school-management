@@ -9,8 +9,6 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.Date;
 
 public class SglEnseignant extends JDialog {
@@ -52,21 +50,23 @@ public class SglEnseignant extends JDialog {
     private SglEnseignant(JFrame parent, boolean modal, Long id) {
         super(parent, modal);
         initialize(id);
+        setLocationRelativeTo(parent);
     }
 
     void initialize(Long id) {
         this.setSize(300, 450);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un enseiggnant");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //this.setIconImage();
 
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-
-                close();
-            }
-        });
+//        this.addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosing(WindowEvent e) {
+//
+//                close();
+//            }
+//        });
 
         if(id == null) enseignantDTO = new EnseignantDTO();
         else {
@@ -317,7 +317,7 @@ public class SglEnseignant extends JDialog {
         try {
             enseignantService.delete(key);
             JOptionPane.showMessageDialog (this,
-                    "Eleve supprimé avec succèss.",
+                    "Enseignant supprimé avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
             System.out.println();
         } catch (Exception e) {

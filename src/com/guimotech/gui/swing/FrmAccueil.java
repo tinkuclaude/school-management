@@ -21,6 +21,7 @@ public class FrmAccueil extends JFrame {
     private JMenuItem jMenuItemTrimestre = null;
     private JMenuItem jMenuItemNiveau = null;
     private JMenuItem jMenuItemEleve = null;
+    private JMenuItem jMenuItemEnseignant = null;
 
     private JPanel jContentPane = null;
     private JPanel jPanelCenter = null;
@@ -129,6 +130,7 @@ public class FrmAccueil extends JFrame {
             jMenuPersone = new JMenu("Tiers");
 
             jMenuPersone.add(getJMenuItemEleve());
+            jMenuPersone.add(getjMenuItemEnseignant());
         }
         return jMenuPersone;
     }
@@ -176,6 +178,21 @@ public class FrmAccueil extends JFrame {
             });
         }
         return jMenuItemEleve;
+    }
+
+    public JMenuItem getjMenuItemEnseignant() {
+        if(jMenuItemEnseignant == null) {
+            jMenuItemEnseignant = new JMenuItem();
+            jMenuItemEnseignant.setText("Create teacher");
+
+            jMenuItemEnseignant.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SglEnseignant.getInstance(instance, false, null).setVisible(true);
+                }
+            });
+        }
+        return jMenuItemEnseignant;
     }
 
 }
