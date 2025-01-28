@@ -10,14 +10,16 @@ public class Eleve {
     private String prenom;
     private Integer sexe;
     private Date datenaiss;
+    private String telephone;
 
-    public Eleve(Long id, String matricule, String nom, String prenom, Integer sexe, Date datenaiss) {
+    public Eleve(Long id, String matricule, String nom, String prenom, Integer sexe, Date datenaiss, String telephone) {
         this.id = id;
         this.matricule = matricule;
         this.nom = nom;
         this.prenom = prenom;
         this.sexe = sexe;
         this.datenaiss = datenaiss;
+        this.telephone = telephone;
     }
 
     public Eleve() {
@@ -77,5 +79,11 @@ public class Eleve {
         this.datenaiss = datenaiss;
     }
 
+    public String getTelephone() {
+        return telephone;
+    }
 
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 }

@@ -10,14 +10,16 @@ public class EleveDTO {
     private String prenom;
     private Integer sexe;
     private Date datenaiss;
+    private String telephone;
 
-    public EleveDTO(Long id, String matricule, String nom, String prenom, Integer sexe, Date datenaiss) {
+    public EleveDTO(Long id, String matricule, String nom, String prenom, Integer sexe, Date datenaiss, String telephone) {
             this.id = id;
         this.matricule = matricule;
         this.nom = nom;
         this.prenom = prenom;
         this.sexe = sexe;
         this.datenaiss = datenaiss;
+        this.telephone = telephone;
     }
 
     public EleveDTO() {
@@ -81,9 +83,17 @@ public class EleveDTO {
         this.datenaiss = datenaiss;
     }
 
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
     @Override
     public String toString() {
-        return " matricule: "+ matricule +" nom: "+ nom +" prenom: "+ prenom +" sexe: "+ sexe +" datenaiss: "+ datenaiss;
+        return " matricule: "+ matricule +" nom: "+ nom +" prenom: "+ prenom +" sexe: "+ sexe +" datenaiss: "+ datenaiss +" telephone: "+telephone;
     }
 
 }

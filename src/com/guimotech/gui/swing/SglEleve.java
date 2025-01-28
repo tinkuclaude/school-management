@@ -25,6 +25,7 @@ public class SglEleve extends JDialog {
     private JTextField jTextFieldPrenom = null;
     private JComboBox<String> jComboBoxSexe = null;
     private JTextField jTextFieldDatenaiss = null;
+    private JTextField jTextFieldTelophone = null;
 
     private JButton jButtonValidate = null;
     private JButton jButtonNew = null;
@@ -90,6 +91,7 @@ public class SglEleve extends JDialog {
         if(eleveDTO.getDatenaiss() == null)
             jTextFieldDatenaiss.setText("");
         else jTextFieldDatenaiss.setText(HelperService.dateToString(eleveDTO.getDatenaiss()));
+        jTextFieldTelophone.setText(eleveDTO.getTelephone());
     }
 
     private JPanel getJContentPane() {
@@ -120,6 +122,9 @@ public class SglEleve extends JDialog {
             JLabel jLabelDatenaiss = new JLabel("Datenaiss");
             jLabelDatenaiss.setBounds(10, 170, 100, 25);
 
+            JLabel jLabelTelephone = new JLabel("Telephone");
+            jLabelTelephone.setBounds(10, 210, 100, 25);
+
             jPanelContents = new JPanel();
             jPanelContents.setLayout(null);
             jPanelContents.setBorder(new LineBorder(new Color(25, 100, 250), 2));
@@ -133,6 +138,8 @@ public class SglEleve extends JDialog {
             jPanelContents.add(getJComboBoxSexe());
             jPanelContents.add(jLabelDatenaiss);
             jPanelContents.add(getJTextFieldDatenaiss());
+            jPanelContents.add(jLabelTelephone);
+            jPanelContents.add(getJTextFieldTelephone());
 
 
         }
@@ -202,6 +209,15 @@ public class SglEleve extends JDialog {
         return jTextFieldDatenaiss;
     }
 
+    public JTextField getJTextFieldTelephone() {
+        if(jTextFieldTelophone == null) {
+            jTextFieldTelophone = new JTextField();
+            jTextFieldTelophone.setBorder(new LineBorder(new Color(0, 0, 0), 1));
+            jTextFieldTelophone.setBounds(120, 210, 100, 25);
+        }
+        return jTextFieldTelophone;
+    }
+
     public JButton getJButtonValidate() {
         if(jButtonValidate == null) {
             jButtonValidate = new JButton();
@@ -223,6 +239,7 @@ public class SglEleve extends JDialog {
         String prenom = jTextFieldPrenom.getText();
         Integer sexe = jComboBoxSexe.getSelectedIndex();
         String dateStr = jTextFieldDatenaiss.getText();
+        String telephone = jTextFieldTelophone.getText();
 
         Date dateNaiss = null;
 
@@ -243,6 +260,7 @@ public class SglEleve extends JDialog {
         eleveDTO.setPrenom(prenom);
         eleveDTO.setSexe(sexe);
         eleveDTO.setDatenaiss(dateNaiss);
+        eleveDTO.setTelephone(telephone);
 
         try {
             eleveDTO = eleveService.save(eleveDTO);

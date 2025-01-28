@@ -22,11 +22,11 @@ public class EleveService {
     private EleveRepo eleveRepo = EleveRepo.getInstance();
 
     private Eleve convert(EleveDTO dto) {
-        return new Eleve(dto.getId(), dto.getMatricule(), dto.getNom(), dto.getPrenom(), dto.getSexe(), dto.getDatenaiss());
+        return new Eleve(dto.getId(), dto.getMatricule(), dto.getNom(), dto.getPrenom(), dto.getSexe(), dto.getDatenaiss(), dto.getTelephone());
     }
 
     private EleveDTO convert(Eleve model) {
-        return new EleveDTO(model.getId(), model.getMatricule(), model.getNom(), model.getPrenom(), model.getSexe(), model.getDatenaiss());
+        return new EleveDTO(model.getId(), model.getMatricule(), model.getNom(), model.getPrenom(), model.getSexe(), model.getDatenaiss(), model.getTelephone());
     }
 
     private void map(EleveDTO dto, Eleve model) {
@@ -36,6 +36,7 @@ public class EleveService {
         model.setPrenom(dto.getPrenom());
         model.setSexe(dto.getSexe());
         model.setDatenaiss(dto.getDatenaiss());
+        model.setTelephone(dto.getTelephone());
         // calculer d'autre attribut qui ne sont dans DTO
     }
 

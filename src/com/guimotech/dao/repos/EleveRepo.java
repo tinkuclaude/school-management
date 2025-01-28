@@ -27,8 +27,8 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
 
     @Override
     public boolean create(Eleve obj) throws SQLException {
-        String sql = "INSERT into Eleve (matricule, nom, prenom, sexe, date_naiss) " +
-                " values (?, ?, ?, ?, ?) returning id;";
+        String sql = "INSERT into Eleve (matricule, nom, prenom, sexe, date_naiss, telephone) " +
+                " values (?, ?, ?, ?, ?, ?) returning id;";
 
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
         ps.setString(1, obj.getMatricule());
@@ -36,6 +36,7 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
         ps.setString(3, obj.getPrenom());
         ps.setObject(4, obj.getSexe());
         ps.setDate(5, obj.getDatenaiss());
+        ps.setString(6, obj.getTelephone());
 
         ResultSet res = ps.executeQuery();
         if(res != null && res.next()) {
@@ -46,7 +47,7 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
 
     @Override
     public boolean update(Eleve obj) throws SQLException {
-        String sql = "UPDATE eleve set matricule = ?, nom = ?, prenom = ?, sexe = ?, date_naiss = ? where id = ?;";
+        String sql = "UPDATE eleve set matricule = ?, nom = ?, prenom = ?, sexe = ?, date_naiss = ?, telephone = ? where id = ?;";
 
         PreparedStatement ps = dbConfig.getConnection().prepareStatement(sql);
         ps.setString(1, obj.getMatricule());
@@ -54,7 +55,8 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
         ps.setString(3, obj.getPrenom());
         ps.setObject(4, obj.getSexe());
         ps.setDate(5, obj.getDatenaiss());
-        ps.setLong(6, obj.getId());
+        ps.setString(6, obj.getTelephone());
+        ps.setLong(7, obj.getId());
 
         return ps.executeUpdate() >= 0;
 
@@ -114,6 +116,7 @@ public class EleveRepo extends RepoAbs<Eleve, String> {
         eleve.setPrenom(res.getString("prenom"));
         eleve.setSexe((Integer) res.getObject("sexe"));
         eleve.setDatenaiss(res.getDate("date_naiss"));
+        eleve.setTelephone(res.getString("telephone"));
 
         return eleve;
     }

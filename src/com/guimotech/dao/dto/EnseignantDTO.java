@@ -67,7 +67,7 @@ public class EnseignantDTO {
         return civilite;
     }
 
-    public void setCivilite(Integer sexe) {
+    public void setCivilite(Integer civilite) {
 
         this.civilite = civilite;
     }

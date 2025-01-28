@@ -239,7 +239,10 @@ public class SglEnseignant extends JDialog {
         String matricule = jTextFieldMatricule.getText();
         String nom = jTextFieldNom.getText();
         String prenom = jTextFieldPrenom.getText();
-        Integer civilite = jComboBoxCivilite.getSelectedIndex();
+        int civilite = jComboBoxCivilite.getSelectedIndex();
+//        if (civilite==-1) {
+//            JOptionPane.showMessageDialog(this, "Entrer la civilite de l'enseignant","School Management", JOptionPane.INFORMATION_MESSAGE);
+//        }
         String dateStr = jTextFieldDatenaiss.getText();
         String telephone = jTextFieldTelephone.getText();
 
@@ -267,7 +270,7 @@ public class SglEnseignant extends JDialog {
         try {
             enseignantDTO = enseignantService.save(enseignantDTO);
             JOptionPane.showMessageDialog (this,
-                    "Eleve enregistré avec succèss.",
+                    "Enseignant enregistré avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog (this,
