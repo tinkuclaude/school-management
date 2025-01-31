@@ -45,14 +45,19 @@ public class ClasseService {
     public ClasseDTO save(ClasseDTO classeDTO) throws Exception {
         // verifier que toutes les informations obligatoire sont definies
 
-        if(classeDTO.getCode() == null || classeDTO.getCode().trim().equals(""))  {
+        if(classeDTO.getCode() == null || classeDTO.getCode().isBlank())  {
             // throw an Exception
             throw new Exception("Entrer le code d'une classe");
         }
 
+        if(classeDTO.getNiveau() == null || classeDTO.getNiveau().isBlank())  {
+            // throw an Exception
+            throw new Exception("Selectionner le niveau de la classe");
+        }
+
         // throw an Exception
         if(classeDTO.getIntitule() == null ||
-                classeDTO.getIntitule().equals("")) throw new Exception("Entrer l'intitulé d'une classe");
+                classeDTO.getIntitule().isBlank()) throw new Exception("Entrer l'intitulé d'une classe");
 
         Classe classe;
         if(classeDTO.getId() == null) {

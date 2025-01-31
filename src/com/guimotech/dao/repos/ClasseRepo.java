@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClasseRepo extends RepoAbs<Classe, String> {
+public class ClasseRepo extends RepoAbs<Classe, Long> {
     private static DBConfig dbConfig = DBConfig.getInstance();
     private static ClasseRepo instance = null;
     public static ClasseRepo getInstance() {
@@ -75,7 +75,7 @@ public class ClasseRepo extends RepoAbs<Classe, String> {
     }
 
 
-    @Override
+
     public Classe findById(String code) throws SQLException {
 
 
@@ -84,9 +84,13 @@ public class ClasseRepo extends RepoAbs<Classe, String> {
         ps.setString(1, code);
 
         ResultSet res = ps.executeQuery();
-        return  getDataModel(res);
+        if(res != null && res.next()) {
+            return getData(res);
+        }
+        return new Classe();
     }
 
+    @Override
     public Classe findById(Long id) throws SQLException {
 
         String sql = "SELECT * FROM CLASSE WHERE ID = ?;";
@@ -94,15 +98,8 @@ public class ClasseRepo extends RepoAbs<Classe, String> {
         ps.setLong(1, id);
 
         ResultSet res = ps.executeQuery();
-        return  getDataModel(res);
-    }
-
-    private Classe getDataModel(ResultSet res) throws SQLException {
-
-        if(res != null) {
-            if(res.next()) {
-                return getData(res);
-            }
+        if(res != null && res.next()) {
+            return getData(res);
         }
         return new Classe();
     }
@@ -134,12 +131,6 @@ public class ClasseRepo extends RepoAbs<Classe, String> {
         return classes;
     }
 
-//    @Override
-//    public boolean delete(String key) throws SQLException {
-//        return false;
-//    }
-
-    @Override
     public boolean delete(String key) throws SQLException {
         String sql = "DELETE FROM Classe where code = ?;";
 
@@ -149,6 +140,7 @@ public class ClasseRepo extends RepoAbs<Classe, String> {
         return ps.executeUpdate() > 0;
     }
 
+    @Override
     public boolean delete(Long key) throws SQLException {
         String sql = "DELETE FROM Classe where id = ?;";
 
