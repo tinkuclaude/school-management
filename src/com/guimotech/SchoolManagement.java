@@ -22,7 +22,6 @@ public class SchoolManagement {
         }
 
         FrmAccueil.getInstance().setVisible(true);
-
         System.out.println("Merci d'avoir utilisé ce Systeme");
     }
 }

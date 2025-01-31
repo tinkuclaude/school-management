@@ -10,13 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 public class SglNiveau extends JDialog {
     // JFrame:
     // JDialog:
 
     // service
-    private NiveauService niveauService = NiveauService.getInstance();
+    private static final NiveauService niveauService = NiveauService.getInstance();
 
     private JTextField jTextFieldCode = null;
     private JTextField jTextFieldIntitule = null;
@@ -90,6 +91,14 @@ public class SglNiveau extends JDialog {
         else jTextFieldFraisInscription.setText(String.valueOf(niveauDTO.getFrais_inscription()));
     }
 
+    public static void chargeNiveaux(JComboBox<NiveauDTO> jComboBox) {
+        List<NiveauDTO> niveauDTOS = niveauService.getAll();
+        jComboBox.removeAllItems();
+        for (NiveauDTO niv: niveauDTOS) {
+            jComboBox.addItem(niv);
+        }
+        jComboBox.setSelectedIndex(-1);
+    }
     private JPanel getJContentPane() {
         if(jContentPane == null) {
             jContentPane = new JPanel();
@@ -228,7 +237,7 @@ public class SglNiveau extends JDialog {
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog (this,
-                        "Entrer un momtant valide",
+                        "Entrer un montant valide",
                         "School Management", JOptionPane.INFORMATION_MESSAGE);
                 jTextFieldFraisInscription.requestFocus();
                 jTextFieldFraisInscription.selectAll();
