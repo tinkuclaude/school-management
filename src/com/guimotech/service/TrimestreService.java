@@ -5,6 +5,7 @@ import com.guimotech.dao.model.Trimestre;
 import com.guimotech.dao.repos.TrimestreRepo;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,6 +88,10 @@ public class TrimestreService {
             throw new Exception("Cet trimestre n'existe pas.");
         }
         return trimRepo.delete(key);
+    }
+
+    public List<HashMap<String, Object>> findAllMap() throws SQLException {
+        return trimRepo.findAllMap();
     }
 
 }

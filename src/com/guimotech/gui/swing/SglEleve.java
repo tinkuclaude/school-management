@@ -245,7 +245,7 @@ public class SglEleve extends JDialog {
 
         if(!dateStr.trim().equals(""))
             try {
-                dateNaiss = HelperService.stringToDate(dateStr);
+                dateNaiss = HelperService.stringToDateJU(dateStr);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog (this,
                         "Entrer une date au bon format",

@@ -1,5 +1,7 @@
 package com.guimotech.gui.swing;
 
+import com.guimotech.config.HelperService;
+import com.guimotech.config.MessageType;
 import com.guimotech.dao.dto.TrimestreDTO;
 import com.guimotech.service.TrimestreService;
 
@@ -39,23 +41,25 @@ public class SglTrimestre extends JDialog {
      * @param modal dit si la fenetre est modal
      * @return SglTrimestre the new created instance
      */
-    public static SglTrimestre getInstance(JFrame parent, boolean modal) {
+    public static SglTrimestre getInstance(JFrame parent, boolean modal, Integer numero) {
         if(instance != null) {
             // supprimer instance existante
             instance.dispose();
             instance = null;
         }
-        instance = new SglTrimestre(parent, modal);
+        instance = new SglTrimestre(parent, modal, numero);
         return instance;
     }
 
-    private SglTrimestre(JFrame parent, boolean modal) {
+    private SglTrimestre(JFrame parent, boolean modal, Integer numero) {
         super(parent, modal);
-        initialize();
+        initialize(numero);
         setLocationRelativeTo(parent);
     }
 
-    void initialize() {
+    private TrimestreDTO trimestreDTO ;
+
+    void initialize(Integer numero) {
         this.setSize(300, 200);
         this.setContentPane(getJContentPane());
         this.setTitle("Gestion d' un trimestre");
@@ -67,6 +71,26 @@ public class SglTrimestre extends JDialog {
 //                close();
 //            }
 //        });
+
+        if(numero == null) trimestreDTO = new TrimestreDTO();
+        else {
+            try {
+                trimestreDTO = trimService.getTrimestre(numero);
+            } catch (Exception e) {
+                trimestreDTO = new TrimestreDTO();
+                HelperService.showMessage(e);
+            }
+        }
+
+        setFields();
+    }
+
+    private void setFields() {
+        if(trimestreDTO.getNumero() == null) jTextFieldNumero.setText("");
+        else jTextFieldNumero.setText(String.valueOf(trimestreDTO.getNumero()));
+
+        jTextFieldIntitule.setText(trimestreDTO.getIntitule());
+        jTextFieldNumero.requestFocus();
     }
 
     private JPanel getJContentPane() {
@@ -152,11 +176,10 @@ public class SglTrimestre extends JDialog {
 
     void validated(){
 
-        TrimestreDTO dto = new TrimestreDTO();
         int numero;
         try {
             numero = Integer.parseInt(jTextFieldNumero.getText());
-            dto.setNumero(numero);
+            trimestreDTO.setNumero(numero);
         } catch (Exception e) {
             JOptionPane.showMessageDialog (this,
                     "Entrer un entier valide",
@@ -165,17 +188,13 @@ public class SglTrimestre extends JDialog {
             jTextFieldNumero.selectAll();
             return;
         }
-        dto.setIntitule(jTextFieldIntitule.getText());
+        trimestreDTO.setIntitule(jTextFieldIntitule.getText());
 
         try {
-            trimService.save(dto);
-            JOptionPane.showMessageDialog (this,
-                    "Trimestre enregistré avec succèss.",
-                    "School Management", JOptionPane.INFORMATION_MESSAGE);
+            trimService.save(trimestreDTO);
+            HelperService.showMessage("Trimestre enregistré avec succèss.", MessageType.INFORMATION);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog (this,
-                    e.getMessage(),
-                    "School Management", JOptionPane.ERROR_MESSAGE);
+            HelperService.showMessage(e);
         }
     }
 
@@ -194,8 +213,8 @@ public class SglTrimestre extends JDialog {
     }
 
     private void nouveau() {
-        jTextFieldNumero.setText("");
-        jTextFieldIntitule.setText("");
+        trimestreDTO = new TrimestreDTO();
+        setFields();
     }
 
     public JButton getJButtonDelete() {
@@ -241,8 +260,8 @@ public class SglTrimestre extends JDialog {
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    void close() {
-        instance.dispose();
-        instance = null;
-    }
+//    void close() {
+//        instance.dispose();
+//        instance = null;
+//    }
 }

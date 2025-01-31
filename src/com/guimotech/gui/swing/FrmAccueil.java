@@ -141,12 +141,12 @@ public class FrmAccueil extends JFrame {
     public JMenuItem getJMenuItemTrimestre() {
         if(jMenuItemTrimestre == null) {
             jMenuItemTrimestre = new JMenuItem();
-            jMenuItemTrimestre.setText("Create term");
+            jMenuItemTrimestre.setText("Gestion des trimestres");
 
             jMenuItemTrimestre.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    SglTrimestre.getInstance(instance, false).setVisible(true);
+                    LstTrimestre.getInstance(instance).setVisible(true);
                 }
             });
         }

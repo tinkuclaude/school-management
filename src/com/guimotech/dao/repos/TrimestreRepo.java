@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TrimestreRepo extends RepoAbs<Trimestre, Integer> {
@@ -103,6 +104,17 @@ public class TrimestreRepo extends RepoAbs<Trimestre, Integer> {
         }
 
         return trims;
+    }
+
+    public List<HashMap<String, Object>> findAllMap() throws SQLException {
+        String sql = "SELECT * FROM TRIMESTRE ;";
+        Statement ps = dbConfig.getConnection().createStatement();
+
+        ResultSet res = ps.executeQuery(sql);
+        if(res != null) {
+            return getAll(res);
+        }
+        throw new RuntimeException("An unexcepted error occurred");
     }
 
     @Override
