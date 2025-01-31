@@ -1,19 +1,19 @@
 package com.guimotech.dao.model;
 
-public class Niveau {
+public class Classe {
     private Long id;
     private String code;
     private String intitule;
-    private Integer frais_inscription;
+    private String niveau;
 
-    public Niveau(Long id, String code, String intitule, Integer frais_insciption) {
+    public Classe(Long id, String code, String intitule, String niveau) {
         this.id=id;
         this.code = code;
         this.intitule = intitule;
-        this.frais_inscription = frais_insciption;
+        this.niveau = niveau;
     }
 
-    public Niveau() {
+    public Classe() {
     }
 
     public Long getId() {
@@ -40,18 +40,16 @@ public class Niveau {
         this.intitule = intitule;
     }
 
-    public Integer getFrais_inscription() {
-        return frais_inscription;
+    public String getNiveau() {
+        return niveau;
     }
 
-    public void setFrais_inscription(Integer frais_inscription) {
-
-        this.frais_inscription = frais_inscription;
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
     }
-
-
-
 }
+
+
 
 
 

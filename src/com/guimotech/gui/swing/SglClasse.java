@@ -1,7 +1,8 @@
 package com.guimotech.gui.swing;
 
+import com.guimotech.dao.dto.ClasseDTO;
 import com.guimotech.dao.dto.NiveauDTO;
-import com.guimotech.service.NiveauService;
+import com.guimotech.service.ClasseService;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -10,18 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 
-public class SglNiveau extends JDialog {
+public class SglClasse extends JDialog {
     // JFrame:
     // JDialog:
 
     // service
-    private static final NiveauService niveauService = NiveauService.getInstance();
+    private static final ClasseService classeService = ClasseService.getInstance();
 
     private JTextField jTextFieldCode = null;
     private JTextField jTextFieldIntitule = null;
-    private JTextField jTextFieldFraisInscription =null;
+    private JComboBox<NiveauDTO> jComboBoxNiveau = null;
 
     private JButton jButtonValidate = null;
     private JButton jButtonNew = null;
@@ -33,24 +33,24 @@ public class SglNiveau extends JDialog {
     // JPanel for button on south of frame
     private JPanel jPanelButtons = null;
 
-    private static SglNiveau instance = null;
+    private static SglClasse instance = null;
 
-    private NiveauDTO niveauDTO = new NiveauDTO();
+    private ClasseDTO classeDTO = new ClasseDTO();
 
 //    public SglNiveau(JFrame parent, boolean modal) {
 //    }
 
-    public static SglNiveau getInstance(JFrame parent, boolean modal, Long id) {
+    public static SglClasse getInstance(JFrame parent, boolean modal, Long id) {
         if(instance != null) {
             // supprimer instance existante
             instance.dispose();
             instance = null;
         }
-        instance = new SglNiveau(parent, modal, id);
+        instance = new SglClasse(parent, modal, id);
         return instance;
     }
 
-    private SglNiveau(JFrame parent, boolean modal, Long id) {
+    private SglClasse(JFrame parent, boolean modal, Long id) {
         super(parent, modal);
         initialize(id);
         setLocationRelativeTo(parent);
@@ -59,22 +59,22 @@ public class SglNiveau extends JDialog {
     void initialize(Long id) {
         this.setSize(300, 200);
         this.setContentPane(getJContentPane());
-        this.setTitle("Gestion d' un niveau");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setTitle("Gestion d'une classe");
+        //this.setIconImage();
 
-//        this.addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosing(WindowEvent e) {
-//                close();
-//            }
-//        });
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                close();
+            }
+        });
 
         if(id == null) {
-            niveauDTO = new NiveauDTO();
+            classeDTO = new ClasseDTO();
         }
         else {
             try {
-                niveauDTO = niveauService.getNiveau(id);
+                classeDTO = classeService.getClasse(id);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -84,21 +84,20 @@ public class SglNiveau extends JDialog {
     }
 
     private void setFields() {
-        jTextFieldCode.setText(niveauDTO.getCode());
-        jTextFieldIntitule.setText(niveauDTO.getIntitule());
-        if(niveauDTO.getFrais_inscription() == null)
-            jTextFieldFraisInscription.setText("");
-        else jTextFieldFraisInscription.setText(String.valueOf(niveauDTO.getFrais_inscription()));
+
+        SglNiveau.chargeNiveaux(jComboBoxNiveau);
+
+        jTextFieldCode.setText(classeDTO.getCode());
+        jTextFieldIntitule.setText(classeDTO.getIntitule());
+        if(classeDTO.getNiveau() == null)
+            jComboBoxNiveau.setSelectedIndex(-1);
+        else {
+            NiveauDTO niveauDTO = new NiveauDTO();
+            niveauDTO.setCode(classeDTO.getNiveau());
+            jComboBoxNiveau.setSelectedItem(niveauDTO);
+        }
     }
 
-    public static void chargeNiveaux(JComboBox<NiveauDTO> jComboBox) {
-        List<NiveauDTO> niveauDTOS = niveauService.getAll();
-        jComboBox.removeAllItems();
-        for (NiveauDTO niv: niveauDTOS) {
-            jComboBox.addItem(niv);
-        }
-        jComboBox.setSelectedIndex(-1);
-    }
     private JPanel getJContentPane() {
         if(jContentPane == null) {
             jContentPane = new JPanel();
@@ -122,8 +121,8 @@ public class SglNiveau extends JDialog {
             JLabel jLabelIntitule = new JLabel("Intitulé");
             jLabelIntitule.setBounds(10, 50, 100, 25);
 
-            JLabel jLabelFraisInscription = new JLabel("Frais Insc.");
-            jLabelFraisInscription.setBounds(10, 90, 100, 25);
+            JLabel jLabelNiveau = new JLabel("Niveau.");
+            jLabelNiveau.setBounds(10, 90, 100, 25);
 
 
             jPanelContents = new JPanel();
@@ -135,8 +134,8 @@ public class SglNiveau extends JDialog {
             jPanelContents.add(getJTextFieldCode());
             jPanelContents.add(jLabelIntitule);
             jPanelContents.add(getJTextFieldIntitule());
-            jPanelContents.add(jLabelFraisInscription);
-            jPanelContents.add(getjTextFieldFraisInscription());
+            jPanelContents.add(jLabelNiveau);
+            jPanelContents.add(getjComboBoxNiveau());
 
         }
         return jPanelContents;
@@ -175,13 +174,13 @@ public class SglNiveau extends JDialog {
         }
         return jTextFieldIntitule;
     }
-    public JTextField getjTextFieldFraisInscription() {
-        if(jTextFieldFraisInscription == null) {
-            jTextFieldFraisInscription = new JTextField();
-            jTextFieldFraisInscription.setBorder(new LineBorder(new Color(0, 0, 0), 1));
-            jTextFieldFraisInscription.setBounds(120, 90, 100, 25);
+    public JComboBox<NiveauDTO> getjComboBoxNiveau() {
+        if(jComboBoxNiveau == null) {
+            jComboBoxNiveau = new JComboBox<>();
+            jComboBoxNiveau.setBorder(new LineBorder(new Color(0, 0, 0), 1));
+            jComboBoxNiveau.setBounds(120, 90, 100, 25);
         }
-        return jTextFieldFraisInscription;
+        return jComboBoxNiveau;
     }
     public JButton getJButtonValidate() {
         if(jButtonValidate == null) {
@@ -204,7 +203,7 @@ public class SglNiveau extends JDialog {
         String code = jTextFieldCode.getText();
         if (code.trim().equals("")){
             JOptionPane.showMessageDialog (this,
-                    "Entrer le code du niveau",
+                    "Entrer le code de la classe",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
             jTextFieldCode.requestFocus();
             jTextFieldCode.selectAll();
@@ -214,45 +213,31 @@ public class SglNiveau extends JDialog {
         String intitule = jTextFieldIntitule.getText();
         if (intitule.trim().equals("")){
             JOptionPane.showMessageDialog (this,
-                    "Entrer le code du niveau",
+                    "Entrer le code de la classe",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
             jTextFieldIntitule.requestFocus();
             jTextFieldIntitule.selectAll();
             return;
         }
 
-        String frais = jTextFieldFraisInscription.getText();
-        Integer fraisInscription = null;
+        NiveauDTO niveau = (NiveauDTO) jComboBoxNiveau.getSelectedItem();
 
-        if(!frais.trim().equals("")) {
-            try {
-                fraisInscription = Integer.parseInt(frais.trim());
-                if(fraisInscription < 0) {
-                    JOptionPane.showMessageDialog (this,
-                            "Entrer un frais d'inscription valide",
-                            "School Management", JOptionPane.INFORMATION_MESSAGE);
-                    jTextFieldFraisInscription.requestFocus();
-                    jTextFieldFraisInscription.selectAll();
-                    return;
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog (this,
-                        "Entrer un montant valide",
-                        "School Management", JOptionPane.INFORMATION_MESSAGE);
-                jTextFieldFraisInscription.requestFocus();
-                jTextFieldFraisInscription.selectAll();
-                return;
-            }
+        if(niveau == null)  {
+          JOptionPane.showMessageDialog (this,
+                    "Selectionner un niveau",
+                    "School Management", JOptionPane.INFORMATION_MESSAGE);
+            jComboBoxNiveau.requestFocus();
+            return;
         }
 
-        niveauDTO.setCode(code);
-        niveauDTO.setIntitule(intitule);
-        niveauDTO.setFrais_inscription(fraisInscription);
+        classeDTO.setCode(code);
+        classeDTO.setIntitule(intitule);
+        classeDTO.setNiveau(niveau.getCode());
 
         try {
-            niveauDTO = niveauService.save(niveauDTO);
+            classeDTO =classeService.save(classeDTO);
             JOptionPane.showMessageDialog (this,
-                    "Niveau enregistré avec succèss.",
+                    "Classe enregistrée avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -277,7 +262,7 @@ public class SglNiveau extends JDialog {
     }
 
     private void nouveau() {
-        niveauDTO = new NiveauDTO();
+        classeDTO = new ClasseDTO();
         setFields();
         jTextFieldCode.requestFocus();
     }
@@ -301,9 +286,9 @@ public class SglNiveau extends JDialog {
         String key = jTextFieldCode.getText();
 
         try {
-            niveauService.delete(key);
+            ClasseService.delete(key);
             JOptionPane.showMessageDialog (this,
-                    "Trimestre supprimé avec succèss.",
+                    "Classe supprimé avec succèss.",
                     "School Management", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
@@ -319,3 +304,6 @@ public class SglNiveau extends JDialog {
         instance = null;
     }
 }
+
+
+

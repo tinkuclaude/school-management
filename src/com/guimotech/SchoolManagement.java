@@ -4,8 +4,6 @@ import com.guimotech.config.DBConfig;
 
 import com.guimotech.gui.swing.FrmAccueil;
 
-import java.sql.SQLException;
-
 public class SchoolManagement {
     public static void main(String[] args) {
         System.out.println("Welcome To School Maganament System");

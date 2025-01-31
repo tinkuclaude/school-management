@@ -22,6 +22,7 @@ public class FrmAccueil extends JFrame {
     private JMenuItem jMenuItemNiveau = null;
     private JMenuItem jMenuItemEleve = null;
     private JMenuItem jMenuItemEnseignant = null;
+    private JMenuItem jMenuItemClasse = null;
 
     private JPanel jContentPane = null;
     private JPanel jPanelCenter = null;
@@ -78,16 +79,18 @@ public class FrmAccueil extends JFrame {
     }
 
     public JPanel getJPanelCenter() {
-        if(jPanelCenter == null) {
+        if (jPanelCenter == null) {
             jPanelCenter = new JPanel();
+            jPanelCenter.setBackground(Color.black);
         }
         return jPanelCenter;
     }
 
     public JPanel getJPanelSouth() {
-        if(jPanelSouth == null) {
+
+        if (jPanelSouth == null) {
             jPanelSouth = new JPanel();
-            jPanelSouth.setBackground(Color.BLUE);
+            jPanelSouth.setBackground(Color.GREEN);
             jPanelSouth.setPreferredSize(new Dimension(10, 50));
         }
         return jPanelSouth;
@@ -96,7 +99,6 @@ public class FrmAccueil extends JFrame {
     public JMenuBar getJMenuBarMain() {
         if(jMenuBarMain == null) {
             jMenuBarMain = new JMenuBar();
-
             jMenuBarMain.add(getJMenuConfig());
             jMenuBarMain.add(getJMenuStructure());
             jMenuBarMain.add(getJMenuPersone());
@@ -121,6 +123,7 @@ public class FrmAccueil extends JFrame {
             jMenuStructure.setText("School");
 
             jMenuStructure.add(getJMenuItemNiveau());
+            jMenuStructure.add(getJMenuItemClasse());
         }
         return jMenuStructure;
     }
@@ -195,4 +198,19 @@ public class FrmAccueil extends JFrame {
         return jMenuItemEnseignant;
     }
 
+    public JMenuItem getJMenuItemClasse() {
+        if (jMenuItemClasse == null) {
+            jMenuItemClasse = new JMenuItem();
+            jMenuItemClasse.setText("Create class");
+
+            jMenuItemClasse.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SglClasse.getInstance(instance, false, null).setVisible(true);
+                }
+            });
+        }
+        return jMenuItemClasse;
+    }
 }
+
