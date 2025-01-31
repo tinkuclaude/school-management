@@ -44,13 +44,13 @@ public class EnseignantService {
         // verifier que toutes les informations obligatoire sont definies
 
         if(enseignantDTO.getMatricule() == null ||
-                enseignantDTO.getMatricule().trim().equals("")) {
+                enseignantDTO.getMatricule().isBlank()) {
             // throw an Exception
             throw new Exception("Entrer le matricule de l'enseignant");
         }
 
         if(enseignantDTO.getNom() == null ||
-                enseignantDTO.getNom().trim().equals("")) {
+                enseignantDTO.getNom().isBlank()) {
             // throw an Exception
             throw new Exception("Entrer le nom de l'enseignant");
         }

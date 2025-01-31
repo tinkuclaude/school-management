@@ -252,9 +252,11 @@ public class SglEnseignant extends JDialog {
             try {
                 dateNaiss = HelperService.stringToDate(dateStr);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog (this,
-                        "Entrer une date au bon format",
-                        "School Management", JOptionPane.INFORMATION_MESSAGE);
+//                JOptionPane.showMessageDialog (this,
+//                        "Entrer une date au bon format",
+//                        "School Management", JOptionPane.INFORMATION_MESSAGE);
+//                HelperService.showMessage(e);
+                HelperService.showMessageError("Entrer une date au bon format");
                 jTextFieldMatricule.requestFocus();
                 jTextFieldMatricule.selectAll();
                 return;

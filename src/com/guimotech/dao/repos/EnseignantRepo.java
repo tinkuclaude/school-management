@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnseignantRepo extends RepoAbs<Enseignant, String> {
+public class EnseignantRepo extends RepoAbs<Enseignant, Long> {
     private static DBConfig dbConfig = DBConfig.getInstance();
     private static EnseignantRepo instance = null;
     public static EnseignantRepo getInstance() {
@@ -75,7 +75,7 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
         return obj;
     }
 
-    @Override
+
     public Enseignant findById(String key) throws SQLException {
 
         Enseignant enseignant = new Enseignant();
@@ -92,6 +92,7 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
         return enseignant;
     }
 
+    @Override
     public Enseignant findById(Long key) throws SQLException {
 
         Enseignant enseignant = new Enseignant();
@@ -140,7 +141,6 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
         return enseignants;
     }
 
-    @Override
     public boolean delete(String key) throws SQLException {
         String sql = "DELETE FROM Enseignant where matricule = ?;";
 
@@ -150,6 +150,7 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
         return ps.executeUpdate() > 0;
     }
 
+    @Override
     public boolean delete(Long key) throws SQLException {
         String sql = "DELETE FROM Enseignant where id = ?;";
 
@@ -161,7 +162,7 @@ public class EnseignantRepo extends RepoAbs<Enseignant, String> {
 
     @Override
     public boolean deleteOne(Enseignant obj) throws SQLException {
-        return delete(obj.getMatricule());
+        return delete(obj.getId());
     }
 
     @Override
