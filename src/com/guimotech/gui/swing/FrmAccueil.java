@@ -20,6 +20,7 @@ public class FrmAccueil extends JFrame {
 
     private JMenuItem jMenuItemTrimestre = null;
     private JMenuItem jMenuItemNiveau = null;
+    private JMenuItem jMenuItemClasse = null;
     private JMenuItem jMenuItemEleve = null;
 
     private JPanel jContentPane = null;
@@ -28,8 +29,9 @@ public class FrmAccueil extends JFrame {
 
 
     private static FrmAccueil instance = null;
+
     public static FrmAccueil getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new FrmAccueil();
         }
         return instance;
@@ -67,7 +69,7 @@ public class FrmAccueil extends JFrame {
 
 
     public JPanel getJContentPane() {
-        if(jContentPane == null) {
+        if (jContentPane == null) {
             jContentPane = new JPanel();
             jContentPane.setLayout(new BorderLayout());
             jContentPane.add(getJPanelCenter(), BorderLayout.CENTER);
@@ -77,23 +79,24 @@ public class FrmAccueil extends JFrame {
     }
 
     public JPanel getJPanelCenter() {
-        if(jPanelCenter == null) {
+        if (jPanelCenter == null) {
             jPanelCenter = new JPanel();
+            jPanelCenter.setBackground(Color.black);
         }
         return jPanelCenter;
     }
 
     public JPanel getJPanelSouth() {
-        if(jPanelSouth == null) {
+        if (jPanelSouth == null) {
             jPanelSouth = new JPanel();
-            jPanelSouth.setBackground(Color.BLUE);
+            jPanelSouth.setBackground(Color.GREEN);
             jPanelSouth.setPreferredSize(new Dimension(10, 50));
         }
         return jPanelSouth;
     }
 
     public JMenuBar getJMenuBarMain() {
-        if(jMenuBarMain == null) {
+        if (jMenuBarMain == null) {
             jMenuBarMain = new JMenuBar();
 
             jMenuBarMain.add(getJMenuConfig());
@@ -104,7 +107,7 @@ public class FrmAccueil extends JFrame {
     }
 
     public JMenu getJMenuConfig() {
-        if(jMenuConfig == null) {
+        if (jMenuConfig == null) {
             jMenuConfig = new JMenu();
             jMenuConfig.setText("Configuration");
 
@@ -115,17 +118,18 @@ public class FrmAccueil extends JFrame {
     }
 
     public JMenu getJMenuStructure() {
-        if(jMenuStructure == null) {
+        if (jMenuStructure == null) {
             jMenuStructure = new JMenu();
             jMenuStructure.setText("School");
 
             jMenuStructure.add(getJMenuItemNiveau());
+            jMenuStructure.add(getJMenuItemClasse());
         }
         return jMenuStructure;
     }
 
     public JMenu getJMenuPersone() {
-        if(jMenuPersone == null) {
+        if (jMenuPersone == null) {
             jMenuPersone = new JMenu("Tiers");
 
             jMenuPersone.add(getJMenuItemEleve());
@@ -134,7 +138,7 @@ public class FrmAccueil extends JFrame {
     }
 
     public JMenuItem getJMenuItemTrimestre() {
-        if(jMenuItemTrimestre == null) {
+        if (jMenuItemTrimestre == null) {
             jMenuItemTrimestre = new JMenuItem();
             jMenuItemTrimestre.setText("Create term");
 
@@ -149,7 +153,7 @@ public class FrmAccueil extends JFrame {
     }
 
     public JMenuItem getJMenuItemNiveau() {
-        if(jMenuItemNiveau == null) {
+        if (jMenuItemNiveau == null) {
             jMenuItemNiveau = new JMenuItem();
             jMenuItemNiveau.setText("Create level");
 
@@ -164,7 +168,7 @@ public class FrmAccueil extends JFrame {
     }
 
     public JMenuItem getJMenuItemEleve() {
-        if(jMenuItemEleve == null) {
+        if (jMenuItemEleve == null) {
             jMenuItemEleve = new JMenuItem();
             jMenuItemEleve.setText("Create student");
 
@@ -178,4 +182,20 @@ public class FrmAccueil extends JFrame {
         return jMenuItemEleve;
     }
 
+    public JMenuItem getJMenuItemClasse() {
+        if (jMenuItemClasse == null) {
+            jMenuItemClasse = new JMenuItem();
+            jMenuItemClasse.setText("Create class");
+
+            jMenuItemClasse.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SglClasse.getInstance(instance, false, null).setVisible(true);
+                }
+            });
+        }
+        return jMenuItemClasse;
+
+
+    }
 }

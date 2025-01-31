@@ -55,7 +55,22 @@ public class NiveauDTO {
 
         @Override
         public String toString() {
-            return "Id: "+id+ "Code: "+code+" Intitule: "+intitule+"frais_insciption:"+ frais_inscription;
+//            return "Id: "+id+ "Code: "+code+" Intitule: "+intitule+"frais_insciption:"+ frais_inscription;
+            return code+": "+intitule;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (obj == null)
+
+                return false;
+            if(obj.getClass() != getClass())
+                
+                return false;
+
+            return ((NiveauDTO)obj).getCode().equals(code);
+
         }
 
 
